@@ -1,0 +1,31 @@
+# 로컬 개발용. application-local.yml로 이름을 바꿔 실제 값을 채운다.
+# 이 파일(application-local.yml)은 반드시 .gitignore에 추가하고, 배포용 JAR 빌드 전에는 빼둔다.
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mikkureomi
+    username:
+    password:
+  jpa:
+    show-sql: true
+
+kakao:
+  api:
+    key:
+jwt:
+  secret:
+    key:
+
+# 로컬에서만 액세스 키를 쓰는 경우 (가능하면 aws configure로 로컬 자격 증명을 쓰는 편이 낫다)
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+
+api:
+  food:
+    service-key:
+
+openai:
+  api-key:
