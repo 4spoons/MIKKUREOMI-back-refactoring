@@ -1,0 +1,58 @@
+# 공개돼도 되는 설정만 둔다. 비밀값과 환경별 값은 ${환경변수}로 실행 시 주입한다.
+# 로컬 실행: application-local.yml(.gitignore)에 실제 값 → --spring.profiles.active=local
+# 서버 실행: Parameter Store 값을 환경변수로 넣는 run-app.sh 사용
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}   # 첫 배포로 테이블이 생긴 뒤에는 validate 권장
+    show-sql: ${JPA_SHOW_SQL:false}
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 10MB      # 업로드할 수 있는 개별 파일의 최대 크기. 기본 1MB
+      max-request-size: 10MB   # multipart/form-data 요청의 최대 허용 크기. 기본 10MB
+
+### 25.11.02 추가(예지)
+kakao:
+  api:
+    key: ${KAKAO_API_KEY}
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+
+# AWS S3 (25.11.02 추가)
+# 액세스 키는 두지 않는다. EC2에서는 인스턴스 IAM 역할의 임시 자격 증명을 사용한다.
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2   # 버킷의 리전
+    s3:
+      bucket: ${S3_BUCKET:mikkureomi-bucket}   # 버킷 이름
+    stack:
+      auto: false
+
+# OpenAPI (25.11.05 추가)
+api:
+  food:
+    url: http://api.data.go.kr/openapi/tn_pubr_public_nutri_food_info_api
+    service-key: ${FOOD_API_SERVICE_KEY}
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+# ChatGPT (25.11.06 추가)
+openai:
+  api-key: ${OPENAI_API_KEY}
+  api-url: https://api.openai.com/v1/chat/completions
+  model: gpt-4o
